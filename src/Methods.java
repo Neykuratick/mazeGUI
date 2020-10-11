@@ -2,8 +2,14 @@ import java.util.Random;
 
 public class Methods {
 
-    public static String removeLastChars(String str, int chars) {
-        return str.substring(0, str.length() - chars);
+    public static int[] appendArray(int array[], int arraySize, int number) {
+        for (int i = 0; i < arraySize; i++) {
+            if (array[i] == 0) {
+                array[i] = number;
+                break;
+            }
+        }
+        return array;
     }
 
     public static int countStringChars(String string) {
@@ -66,43 +72,67 @@ public class Methods {
 
         boolean lastLine = false;
 
+        int levelMetaBoolCount = columns+1;
+
         boolean levelMeta[];
-        levelMeta = new boolean[columns];
+        levelMeta = new boolean[levelMetaBoolCount];
         boolean level2Meta[];
-        level2Meta = new boolean[columns];
+        level2Meta = new boolean[levelMetaBoolCount];
+        int foundDoors[];
+        foundDoors = new int[levelMetaBoolCount];
+        int door = 0;
 
         for (int i=0; i < lines-1; i++) {
 
-            int freeCells = 0; while(freeCells == 0) { freeCells = rand.nextInt(columns-2); }
+            int freeCells = 0; while(freeCells == 0) { freeCells = rand.nextInt(columns-4); }
             int freeCellsStartBound = (columns-1) - freeCells;
             int freeCellsStart = rand.nextInt(freeCellsStartBound);
 
             // assigning cells to cells
             boolean isDoorPathExist = false;
             while (!isDoorPathExist) {
-                for (int k = 0; k < columns; k++) {
-                    boolean isTaken = rand.nextBoolean();
-                    levelMeta[k] = isTaken;
-                }
 
-                for (int k = 0; k < columns; k++) {
-                    boolean isTaken = rand.nextBoolean();
-                    level2Meta[k] = isTaken;
-                }
+                if (i == 0) {
+                    for (int k = 0; k < levelMetaBoolCount; k++) {
+                        boolean isTaken = rand.nextBoolean();
+                        levelMeta[k] = isTaken;
+                    }
 
-                // checking if mathing
-                for (int k = 0; k < columns; k++) {
-                    for (int kk = 0; kk < columns; kk++) {
-                        if (levelMeta[k] == level2Meta[kk]) {
-                            isDoorPathExist = true;
-                        }
+                    for (int k = 0; k < levelMetaBoolCount; k++) {
+                        boolean isTaken = rand.nextBoolean();
+                        level2Meta[k] = isTaken;
                     }
                 }
+
+                else {
+                    for (int k = 0; k < levelMetaBoolCount; k++) {
+                        levelMeta[k] = level2Meta[k];
+                        boolean isTaken = rand.nextBoolean();
+                        level2Meta[k] = isTaken;
+                    }
+                }
+
+                // checking if matching
+                for (int k = 0; k < levelMetaBoolCount; k++) {
+                    if (levelMeta[k] == level2Meta[k]) {
+                        appendArray(foundDoors, levelMetaBoolCount, k);
+                        isDoorPathExist = true;
+                    }
+                }
+
             }
 
             if (i == lines-2) {
                 lastLine = true;
             }
+
+            // picking a door
+            int doorPick = 0;
+            while (doorPick == 0) {
+                doorPick = rand.nextInt(levelMetaBoolCount);
+            }
+
+            System.out.println(doorPick);
 
             for (int j=0; j < columns+1; j++) {
 
@@ -110,7 +140,7 @@ public class Methods {
                     level += "#";
                 }
 
-                else if (j >= freeCellsStart && j < columns && freeCells > 0 && !lastLine) {
+                else if (j >= freeCellsStart && j < columns && freeCells > 0 && !lastLine || j == doorPick) {
                     level += ".";
                     freeCells -= 1;
                 }
