@@ -14,12 +14,12 @@ public class MyFrame extends JFrame implements ActionListener {
     JButton rightB;
     JButton saveB;
     JButton generateWorld;
-    String room;
+    public static String room;
     String config;
     String configPath = "src/files/config.ini";
     String levelPath = "src/files/generatedlvl.dat";
     JFrame canvas;
-    JTextArea textArea;
+    public static JTextArea textArea;
     JTextArea keysInput;
     int charE;
 
@@ -29,7 +29,7 @@ public class MyFrame extends JFrame implements ActionListener {
     int playerChar;
     int playerY;
     int playerX;
-    int[] playerStats = new int[3]; // keys, tres, moves
+    int[] playerStats = new int[4]; // keys, tres, moves, is won
 
 
     MyFrame() throws IOException {
@@ -151,7 +151,7 @@ public class MyFrame extends JFrame implements ActionListener {
             playerX = Methods.findSpecificChar(room, columns, lines, '*')[1];
             playerChar = Methods.findSpecificChar(room, columns, lines, '*')[2];
             charE = Methods.findSpecificChar(room, columns, lines, 'E')[2];
-            playerStats[0] = 0; playerStats[1] = 0;
+            playerStats[0] = 0; playerStats[1] = 0; playerStats[3] = 0;
 
             try {
                 playerStats[2] = Methods.readConfig(configPath, 3);
@@ -163,9 +163,9 @@ public class MyFrame extends JFrame implements ActionListener {
             textArea.setText(room);
         }
 
-        if (e.getSource() == upB) {
+        if (e.getSource() == upB && playerStats[3] == 0) {
 
-            if (playerY > -1) {
+            if (playerY > 0) {
                 int newPlayerY = playerY - 1;
                 int newPlayerChar = newPlayerY * (columns + 1) + playerX;
 
@@ -173,43 +173,48 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerY = newPlayerY;
                     playerChar = playerY * (columns + 1) + playerX;
-                    Methods.cellHandler(room.charAt(playerChar), playerStats, configPath);
 
-                    if (room.charAt(newPlayerChar) != 'E') {
+                    try {PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);}
+                    catch (IOException ioException) {ioException.printStackTrace();}
+
+                    if (playerStats[3] == 0 && Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
                         System.out.println(room);
-                    } else {  System.out.println("You've won!"); }
+                    }
 
-                } else { System.out.println("You can't."); }
+                }  else { System.out.println("You can't"); }
             }
 
             textArea.setText(room);
         }
 
-        if (e.getSource() == downB) {
+        if (e.getSource() == downB && playerStats[3] == 0) {
 
             if (playerY < lines - 1) {
                 int newPlayerY = playerY + 1;
                 int newPlayerChar = newPlayerY * (columns + 1) + playerX;
 
                 if (room.charAt(newPlayerChar) != '#') {
-                    room = Methods.replaceChar(room, '.', playerChar);
+                    if (room.charAt(playerChar) != 'E') {
+                        room = Methods.replaceChar(room, '.', playerChar);
+                    }
                     playerY = newPlayerY;
                     playerChar = playerY * (columns + 1) + playerX;
-                    Methods.cellHandler(room.charAt(playerChar), playerStats, configPath);
 
-                    if (room.charAt(newPlayerChar) != 'E') {
+                    try {PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);}
+                    catch (IOException ioException) {ioException.printStackTrace();}
+
+                    if (Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
                         System.out.println(room);
-                    } else {  System.out.println("You've won!"); }
+                    }
 
                 } else { System.out.println("You can't"); }
             }
-
             textArea.setText(room);
         }
 
-        if (e.getSource() == leftB) {
+        if (e.getSource() == leftB && playerStats[3] == 0) {
 
             if (playerX > 1) {
                 int newPlayerX = playerX - 1;
@@ -220,23 +225,20 @@ public class MyFrame extends JFrame implements ActionListener {
                     playerX = newPlayerX;
                     playerChar = playerY * (columns + 1) + playerX;
 
-                    try {
-                        Methods.cellHandler(room.charAt(playerChar), playerStats, configPath);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+                    try {PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);}
+                    catch (IOException ioException) {ioException.printStackTrace();}
 
-                    if (room.charAt(newPlayerChar) != 'E') {
+                    if (Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
                         System.out.println(room);
-                    } else {  System.out.println("You've won!"); }
+                    }
                 } else { System.out.println("You can't"); }
             }
 
             textArea.setText(room);
         }
 
-        if (e.getSource() == rightB) {
+        if (e.getSource() == rightB && playerStats[3] == 0) {
 
             if (playerX < columns - 1) {
                 int newPlayerX = playerX + 1;
@@ -247,16 +249,13 @@ public class MyFrame extends JFrame implements ActionListener {
                     playerX = newPlayerX;
                     playerChar = playerY * (columns + 1) + playerX;
 
-                    try {
-                        Methods.cellHandler(room.charAt(playerChar), playerStats, configPath);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+                    try {PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);}
+                    catch (IOException ioException) {ioException.printStackTrace();}
 
-                    if (room.charAt(newPlayerChar) != 'E') {
+                    if (Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
                         System.out.println(room);
-                    } else {  System.out.println("You've won!"); }
+                    }
                 } else { System.out.println("You can't"); }
             }
 

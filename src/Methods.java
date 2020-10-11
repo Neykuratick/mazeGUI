@@ -131,6 +131,17 @@ public class Methods {
 
     }
 
+    public static boolean canPlaceAsterics(char charr) {
+        boolean result = false;
+        if (charr == '.' || charr == 'K' || charr == 'T' || charr == 'X') {
+            result = true;
+        } else if (charr == 'E' || charr == 'Y' || charr == 'o' || charr == 'u'
+                || charr == 'h' || charr == 'a' || charr == 'w' || charr == 'n') {
+            result = false;
+        }
+        return result;
+    }
+
     public static String scanFile(String filePath) throws FileNotFoundException {
         try {
             String room = "";
@@ -144,21 +155,6 @@ public class Methods {
         } catch(Exception e) {
             return  "nul";
         }
-    }
-
-    public static int[] cellHandler(char charr, int[] playerStats) { // keys, tres, moves, is won
-        System.out.println("You moved to " + charr);
-
-        if (charr == 'K') {
-            playerStats[0] += 1;
-            System.out.println(playerStats[0]);
-        }
-
-        if (charr == 'E' && playerStats[0] > 0) {
-            System.out.println("You won!");
-            playerStats[3] = 1;
-        }
-        return playerStats;
     }
 
 }
