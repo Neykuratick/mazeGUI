@@ -4,10 +4,10 @@ import java.io.IOException;
 
 public class FileHandler {
 
-    public static void writer(String config, String configPath) {
+    public static void writer(String config, String configPath, String levelPath) {
 
         try {
-            File myObj = new File("src/generatedlvl.dat");
+            File myObj = new File(levelPath);
             if (myObj.createNewFile()) {
                 System.out.println("File created");
             }
@@ -16,7 +16,7 @@ public class FileHandler {
         }
 
         try {
-            FileWriter myWriter = new FileWriter("src/generatedlvl.dat");
+            FileWriter myWriter = new FileWriter(levelPath);
             String room = Generate.world(12, 8, config, configPath);
             myWriter.write(room);
             myWriter.close();
@@ -25,9 +25,9 @@ public class FileHandler {
         }
     }
 
-    public static void createConfig() {
+    public static void createConfig(String configPath) {
         try {
-            File myObj = new File("src/config.ini");
+            File myObj = new File(configPath);
             if (myObj.createNewFile()) {
                 System.out.println("File created");
             }
@@ -36,7 +36,7 @@ public class FileHandler {
         }
 
         try {
-            FileWriter myWriter = new FileWriter("src/config.ini");
+            FileWriter myWriter = new FileWriter(configPath);
             myWriter.write("Keys = 0\nTreasures = 0\nTraps = 0\nDifficulty = 4\nMoves = 100");
             myWriter.close();
         } catch (IOException e) {
@@ -44,9 +44,9 @@ public class FileHandler {
         }
     }
 
-    public static void overrideConfig(String str) {
+    public static void overrideConfig(String str, String configPath) {
         try {
-            FileWriter myWriter = new FileWriter("src/config.ini");
+            FileWriter myWriter = new FileWriter(configPath);
             myWriter.write(str);
             myWriter.close();
         } catch (IOException e) {

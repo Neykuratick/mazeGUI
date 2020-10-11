@@ -16,8 +16,8 @@ public class MyFrame extends JFrame implements ActionListener {
     JButton generateWorld;
     String room;
     String config;
-    String confipPath = "src/config.ini";
-    String levelPath = "src/generatedlvl.dat";
+    String configPath = "src/files/config.ini";
+    String levelPath = "src/files/generatedlvl.dat";
     JFrame canvas;
     JTextArea textArea;
     JTextArea keysInput;
@@ -29,26 +29,26 @@ public class MyFrame extends JFrame implements ActionListener {
     int playerChar;
     int playerY;
     int playerX;
-    int[] playerStats = new int[3]; // keys, tres, moves
+    int[] playerStats = new int[4]; // keys, tres, moves, is won
 
 
     MyFrame() throws IOException {
 
-        File f = new File(confipPath);
+        File f = new File(configPath);
         if(!f.exists()) {
-            FileHandler.createConfig();
-            config = Methods.scanFile(confipPath);
+            FileHandler.createConfig(configPath);
+            config = Methods.scanFile(configPath);
         }
 
         if (Methods.scanFile(levelPath).equals("nul")) {
             System.out.println("Error");
-            FileHandler.writer(config, confipPath);
+            FileHandler.writer(config, configPath, levelPath);
             room = Methods.scanFile(levelPath);
         } else { room = Methods.scanFile(levelPath); }
 
 
-        config = Methods.scanFile(confipPath);
-        playerStats[2] = Methods.readConfig(confipPath, 3);
+        config = Methods.scanFile(configPath);
+        playerStats[2] = Methods.readConfig(configPath, 3);
 
         System.out.println(room);
 
@@ -136,11 +136,11 @@ public class MyFrame extends JFrame implements ActionListener {
         if (e.getSource() == saveB) {
             config = keysInput.getText();
             keysInput.setText(config);
-            FileHandler.overrideConfig(config);
+            FileHandler.overrideConfig(config, configPath);
         }
 
         if (e.getSource() == generateWorld) {
-            FileHandler.writer(config, confipPath);
+            FileHandler.writer(config, configPath, levelPath);
             try {
                 room = Methods.scanFile(levelPath);
             } catch (FileNotFoundException fileNotFoundException) {
@@ -154,7 +154,7 @@ public class MyFrame extends JFrame implements ActionListener {
             playerStats[0] = 0; playerStats[1] = 0;
 
             try {
-                playerStats[2] = Methods.readConfig(confipPath, 3);
+                playerStats[2] = Methods.readConfig(configPath, 3);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -173,14 +173,18 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerY = newPlayerY;
                     playerChar = playerY * (columns + 1) + playerX;
-                    Methods.cellHandler(room.charAt(playerChar), playerStats);
+
+                    try {
+                        PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
 
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
                         System.out.println(room);
-                    } else {  System.out.println("You've won!"); }
-
-                } else { System.out.println("You can't."); }
+                    }
+                }
             }
 
             textArea.setText(room);
@@ -196,7 +200,12 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerY = newPlayerY;
                     playerChar = playerY * (columns + 1) + playerX;
-                    Methods.cellHandler(room.charAt(playerChar), playerStats);
+
+                    try {
+                        PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
 
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
@@ -219,7 +228,12 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerX = newPlayerX;
                     playerChar = playerY * (columns + 1) + playerX;
-                    Methods.cellHandler(room.charAt(playerChar), playerStats);
+
+                    try {
+                        PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
 
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
@@ -241,7 +255,12 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerX = newPlayerX;
                     playerChar = playerY * (columns + 1) + playerX;
-                    Methods.cellHandler(room.charAt(playerChar), playerStats);
+
+                    try {
+                        PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
 
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);

@@ -146,19 +146,4 @@ public class Methods {
         }
     }
 
-    public static int[] cellHandler(char charr, int[] playerStats) { // keys, tres, moves, is won
-        System.out.println("You moved to " + charr);
-
-        if (charr == 'K') {
-            playerStats[0] += 1;
-            System.out.println(playerStats[0]);
-        }
-
-        if (charr == 'E' && playerStats[0] > 0) {
-            System.out.println("You won!");
-            playerStats[3] = 1;
-        }
-        return playerStats;
-    }
-
 }
