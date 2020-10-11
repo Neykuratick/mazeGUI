@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 import java.util.Random;
 
@@ -88,6 +85,16 @@ public class FileHandler {
             default -> keys;
         };
 
+    }
+
+    public static void createTraps (String trapsPath, int[] traps) throws IOException {
+        BufferedWriter outputWriter = null;
+        outputWriter = new BufferedWriter(new FileWriter(trapsPath));
+        for (int i = 0; i < traps. length; i++) {
+            outputWriter.write(traps[i]+"\n");
+        }
+        outputWriter.flush();
+        outputWriter.close();
     }
 
 }

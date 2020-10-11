@@ -18,6 +18,15 @@ public class Methods {
         return array;
     }
 
+    public static int isThisIntInArray(int[] array, int arraySize, int number) {
+        for (int i = 0; i < arraySize; i++) {
+            if (array[i] == number) {
+                return number;
+            }
+        }
+        return -1;
+    }
+
     public static int countingElements(int[] array, int arraySize) {
         int count = 0;
         for (int i = 0; i < arraySize; i++) {

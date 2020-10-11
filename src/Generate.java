@@ -224,13 +224,12 @@ public class Generate {
                 place = placesToPlace[placePick];
             }
         }
-
         room = keysAndTreasures(room, configPath);
-
         return room;
     }
 
 
+    public static int[] traps;
 
     public static String keysAndTreasures(String room, String configPath) throws IOException {
         Random rand = new Random();
@@ -246,7 +245,7 @@ public class Generate {
         int treasures = Integer.parseInt(tresString);
 
         String trapsString = prop.getProperty("Traps");
-        int traps = Integer.parseInt(trapsString);
+        int trapsAmount = Integer.parseInt(trapsString);
 
         String movesString = prop.getProperty("Moves");
         int moves = Integer.parseInt(movesString);
@@ -292,18 +291,22 @@ public class Generate {
         }
 
         // traps
-        while(traps > 0 && freeCellsCount > 0) {
+        traps = new int[trapsAmount];
+        int trapsAmountCounter = trapsAmount;
+
+        while(trapsAmountCounter > 0 && freeCellsCount > 0) {
             int placeToSpawn = 0;
             while (placeToSpawn == 0) {
                 placeToSpawn = freeCells[rand.nextInt(charsInRoom)];
             }
             if (room.charAt(placeToSpawn) == '.') {
-                room = Methods.replaceChar(room, 'X', placeToSpawn);
-                traps--;
+                room = Methods.replaceChar(room, '.', placeToSpawn);
+                Methods.appendArray(traps, trapsAmountCounter, placeToSpawn);
+                trapsAmountCounter--;
                 freeCellsCount--;
             }
         }
-
+        FileHandler.createTraps(MyFrame.trapsPath, traps);
         return room;
     }
 

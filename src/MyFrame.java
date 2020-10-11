@@ -18,6 +18,7 @@ public class MyFrame extends JFrame implements ActionListener {
     String config;
     String configPath = "src/files/config.ini";
     String levelPath = "src/files/generatedlvl.dat";
+    public static String trapsPath = "src/files/traps.dat";
     public String stats;
     JFrame canvas;
     public static JTextArea textArea;
@@ -27,10 +28,10 @@ public class MyFrame extends JFrame implements ActionListener {
     int keysAmount;
     int tresAmount;
 
-    int columns = 12;
-    int lines = 8;
+    public static int columns = 12;
+    public static int lines = 8;
 
-    int playerChar;
+    public static int playerChar;
     int playerY;
     int playerX;
     public static int[] playerStats = new int[4]; // 0 keys, 1 treasures, 2 moves, 3 won\lose (-1 to 1)

@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class PlayerController {
     public static String getStatistics(int moves, int keys, int keysCollected, int treasuresCollected) {
@@ -34,6 +37,18 @@ public class PlayerController {
             MyFrame.room = "Ran out of moves!\n";
             System.out.println("Ran out of moves!");
             playerStats[3] = -1;
+        }
+
+        int trapsAmount = FileHandler.readConfig(configPath, 3);
+        try (FileInputStream fis = new FileInputStream(MyFrame.trapsPath)) {
+            Scanner sc = new Scanner(fis);
+            for (int i = 0; i < trapsAmount; i++) {
+                if (MyFrame.playerChar == sc.nextInt()) {
+                    MyFrame.room = "JHONNY, IT'S A TRAP!\n";
+                    System.out.println("It'S A TRAP!");
+                    playerStats[3] = -1;
+                }
+            }
         }
 
         return playerStats;
