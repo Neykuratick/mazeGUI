@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Methods {
 
-    public static int[] appendArray(int array[], int arraySize, int number) {
+    public static int[] appendArray(int[] array, int arraySize, int number) {
         for (int i = 0; i < arraySize; i++) {
             if (array[i] == 0) {
                 array[i] = number;
@@ -15,10 +15,21 @@ public class Methods {
         return array;
     }
 
-    public static int countingElements(int array[], int arraySize) {
+    public static int countingElements(int[] array, int arraySize) {
         int count = 0;
         for (int i = 0; i < arraySize; i++) {
             count++;
+        }
+
+        return count;
+    }
+
+    public static int countingChars(String str, char charr) {
+        int count = 0;
+        for (int i = 0; i < countStringChars(str); i++) {
+            if (str.charAt(i) == charr) {
+                count++;
+            }
         }
 
         return count;
@@ -46,7 +57,7 @@ public class Methods {
         result[0] = pos/(cols+1); // line
         result[1] = pos - result[0]*(cols+1); // column
         result[2] = pos;
-        
+
         return result;
     }
 
@@ -58,7 +69,7 @@ public class Methods {
 
     public static String generaterator(int columns, int lines) {
         Random rand = new Random();
-        
+
         // generating exit
         int charE = 0; while (charE == 0) { charE = rand.nextInt(columns); }
         String level = "";
@@ -80,11 +91,11 @@ public class Methods {
 
         int levelMetaBoolCount = columns+1;
 
-        boolean levelMeta[];
+        boolean[] levelMeta;
         levelMeta = new boolean[levelMetaBoolCount];
-        boolean level2Meta[];
+        boolean[] level2Meta;
         level2Meta = new boolean[levelMetaBoolCount];
-        int foundDoors[];
+        int[] foundDoors;
         foundDoors = new int[levelMetaBoolCount];
         int door = 0;
 
@@ -175,34 +186,99 @@ public class Methods {
 
     }
 
-    public static void afterProccesing(int columns, int lines) throws FileNotFoundException {
-        // room
-        File file = new File("src/levels.dat");
-        Scanner scanFile = new Scanner(file);
-        String room = "";
-        while (scanFile.hasNextLine()) {
-            room = room.concat(scanFile.nextLine() + "\n");
+    public static boolean checkIfCharExitsts(String str, char charr) {
+        for (int i = 0; i < countStringChars(str); i++) {
+            if (str.charAt(i) == charr) {
+                return true;
+            }
         }
-        System.out.println(room);
-        System.out.println("");
 
+        return false;
+    }
+
+    public static int findNearestChar(String str, int startPoint, char charr) {
+        int charInt = 0;
+        for (int i = startPoint; i < countStringChars(str); i++) {
+            if (str.charAt(i) == charr) {
+                charInt = i;
+                break;
+            }
+        }
+
+        return charInt;
+    }
+
+    public static String afterProccesing(int columns, int lines){
+
+        String room = generaterator(columns, lines);
+
+        // finding Exit
         int cursor = 0;
         while (room.charAt(cursor) != 'E') { cursor++; }
         int charExit = cursor;
         int toReplace = columns+1 + charExit;
         room = replaceChar(room, '.', toReplace);
 
+        // finding dead-ends
+        String roomTemp = room;
 
-        cursor = 0;
-        while (room.charAt(cursor) != '.') { cursor++; }
-        int charDot = cursor;
+        int charsToReplaceSize = countingChars(room, '.');
+        int[] charsToReplace = new int[charsToReplaceSize];
 
-        int neededY = charDot/(columns+1);
-        int neededX = charDot - neededY*(columns+1);
-        System.out.println(neededX);
-        System.out.println(neededY);
-        room = replaceChar(room, 'L', charDot);
-        System.out.println(room);
+        while (checkIfCharExitsts(roomTemp, '.')) {
+            cursor = 0;
+            while (roomTemp.charAt(cursor) != '.') { cursor++; }
+            int charDot = cursor;
+
+            int neededY = charDot / (columns + 1);
+            int neededX = charDot - neededY * (columns + 1);
+            int neededChar = neededY*(columns + 1) + neededX;
+
+            if (neededY < 7 && neededY > 0 && neededX < columns && neededX > 0) {
+
+                if (roomTemp.charAt(neededY * (columns + 1) + (neededX + 1)) == '#' &&
+                        roomTemp.charAt(neededY * (columns + 1) + (neededX - 1)) == '#' &&
+                        roomTemp.charAt((neededY + 1) * (columns + 1) + neededX) == '#' &&
+                        roomTemp.charAt((neededY - 1) * (columns + 1) + neededX) == '#' ||
+                        roomTemp.charAt((neededY - 1) * (columns + 1) + neededX) == 'E') {
+                    appendArray(charsToReplace, charsToReplaceSize, neededChar);
+                    roomTemp = replaceChar(roomTemp, '!', charDot);
+                } else {
+                    roomTemp = replaceChar(roomTemp, 'L', charDot);
+                }
+            } else { break; }
+        }
+
+        // fixing dead-ends
+        for (int i = 0; i < charsToReplaceSize; i++) {
+            if ( charsToReplace[i] != 0) {
+                int nextCharInt = findNearestChar(roomTemp, charsToReplace[i], 'L');
+
+                int neededY = charsToReplace[i] / (columns + 1); // cords of dead end
+                int neededX = charsToReplace[i] - neededY * (columns + 1);
+                int neededChar = neededY*(columns + 1) + neededX;
+
+                int neededYNextChar = nextCharInt / (columns + 1); // final cords to make the route
+                int neededXNextChar = nextCharInt - neededYNextChar * (columns + 1);
+                int neededCharNextChar = neededYNextChar*(columns + 1) + neededX;
+
+                while (true) {
+                    neededChar = neededY*(columns + 1) + neededX;
+                    room = replaceChar(room, '.', neededChar);
+
+                    if (neededX < neededXNextChar) {
+                        neededX++;
+                    } else if (neededX > neededXNextChar) {
+                        neededX--;
+                    }
+
+                    if (neededX == neededXNextChar) {
+                        break;
+                    }
+                }
+            }
+        }
+        return room;
     }
 
 
