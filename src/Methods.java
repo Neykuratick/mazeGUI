@@ -145,16 +145,17 @@ public class Methods {
 
             // picking a door
             while (door == 0) {
-                if (i%2 == 0) {
-                    int doorsPick = 0;
-                    doorsPick = rand.nextInt(countingElements(foundDoors, levelMetaBoolCount));
-                    door = foundDoors[doorsPick];
-                } else { break; }
+                int doorsPick = 0;
+                doorsPick = rand.nextInt(countingElements(foundDoors, levelMetaBoolCount));
+                door = foundDoors[doorsPick];
             }
 
-            for (int j=0; j < columns+1; j++) {
+            for (int j=0; j < columns; j++) {
 
-                if (j == columns && !lastLine) {
+                if (j == columns-1 && !lastLine) {
+                    if (i == 0) {
+                        level += "#";
+                    }
                     level += "\n";
                 }
 
@@ -209,6 +210,7 @@ public class Methods {
     }
 
     public static String afterProccesing(int columns, int lines){
+        Random rand = new Random();
 
         String room = generaterator(columns, lines);
 
@@ -278,9 +280,49 @@ public class Methods {
                 }
             }
         }
+
+        // placing player
+        int[] placesToPlace = new int[countStringChars(room)];
+        int placeY;
+        int placeX;
+
+        for (int i = 0; i < countStringChars(room); i++) {
+            if (room.charAt(i) == '.') {
+                placeY = i / (columns + 1);;
+                placeX = i - placeY * (columns + 1);
+                if (placeY > 0 && placeX > 0 && placeX < columns-1 && i != 0) {
+                    appendArray(placesToPlace, countStringChars(room), i);
+                }
+            }
+        }
+
+        int placePick = rand.nextInt(countStringChars(room));
+        int place = placesToPlace[placePick];
+        boolean placePlaced = false;
+
+        while (!placePlaced) {
+            if (place != 0) {
+                room = replaceChar(room, '*', place);
+                placePlaced = true;
+            } else {
+                placePick = rand.nextInt(countStringChars(room));
+                place = placesToPlace[placePick];
+            }
+        }
+
         return room;
     }
 
+    public static String scanFile(String filePath) throws FileNotFoundException {
+        String room = "";
+        File file = new File(filePath);
+        Scanner scanFile = new Scanner(file);
+        room = "";
+        while (scanFile.hasNextLine()) {
+            room = room.concat(scanFile.nextLine() + "\n");
+        }
 
+        return room;
+    }
 
 }

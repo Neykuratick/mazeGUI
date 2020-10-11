@@ -1,3 +1,5 @@
+import org.w3c.dom.ls.LSOutput;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +14,7 @@ public class MyFrame extends JFrame implements ActionListener {
     JButton downB;
     JButton leftB;
     JButton rightB;
+    JButton generateWorld;
     String room;
     JFrame canvas;
     JTextArea textArea;
@@ -26,17 +29,15 @@ public class MyFrame extends JFrame implements ActionListener {
 
     MyFrame() throws FileNotFoundException {
 
-        // room
-        File file = new File("src/levels.dat");
-        Scanner scanFile = new Scanner(file);
-        room = "";
-        while (scanFile.hasNextLine()) {
-            room = room.concat(scanFile.nextLine() + "\n");
-        }
+        room = Methods.scanFile("src/generatedlvl.dat");
+
+        System.out.println(room);
 
         playerY = Methods.findPlayerChar(room, columns, lines, '*')[0];
         playerX = Methods.findPlayerChar(room, columns, lines, '*')[1];
         playerChar = Methods.findPlayerChar(room, columns, lines, '*')[2];
+
+        System.out.println("PlayerY: " + playerX + " PlayerX: " + playerX);
 
         // frame constants
         int canvasWidth = 600; int canvasHeight = 600;
@@ -57,6 +58,10 @@ public class MyFrame extends JFrame implements ActionListener {
         logo.setFont(new Font("Roboto", Font.BOLD, 25));
 
         // buttons
+        generateWorld = new JButton("Generate Level");
+        generateWorld.setBounds(400, 300, 50, 50);
+        generateWorld.addActionListener(this);
+
         upB = new JButton("Up");
         upB.setBounds(100, 100, 50, 50);
         upB.addActionListener(this);
@@ -88,11 +93,27 @@ public class MyFrame extends JFrame implements ActionListener {
         canvas.add(downB);
         canvas.add(leftB);
         canvas.add(rightB);
+        canvas.add(generateWorld);
         canvas.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == generateWorld) {
+            FileHandler.writer();
+            try {
+                room = Methods.scanFile("src/generatedlvl.dat");
+            } catch (FileNotFoundException fileNotFoundException) {
+                System.out.println("Not found");
+            }
+
+            playerY = Methods.findPlayerChar(room, columns, lines, '*')[0];
+            playerX = Methods.findPlayerChar(room, columns, lines, '*')[1];
+            playerChar = Methods.findPlayerChar(room, columns, lines, '*')[2];
+            System.out.println(room);
+            textArea.setText(room);
+        }
 
         if (e.getSource() == upB) {
 
@@ -107,9 +128,10 @@ public class MyFrame extends JFrame implements ActionListener {
                     System.out.println("You moved to " + room.charAt(playerChar));
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
+                        System.out.println(room + "\n");
                     } else {  System.out.println("You've won!"); }
 
-                } else { System.out.println("You can't"); }
+                } else { System.out.println("You can't. Your line = " + playerY + "Your col = " + playerX); }
             }
 
             textArea.setText(room);
@@ -128,6 +150,7 @@ public class MyFrame extends JFrame implements ActionListener {
                     System.out.println("You moved to " + room.charAt(playerChar));
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
+                        System.out.println(room + "\n");
                     } else {  System.out.println("You've won!"); }
 
                 } else { System.out.println("You can't"); }
@@ -149,6 +172,7 @@ public class MyFrame extends JFrame implements ActionListener {
                     System.out.println("You moved to " + room.charAt(playerChar));
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
+                        System.out.println(room + "\n");
                     } else {  System.out.println("You've won!"); }
                 } else { System.out.println("You can't"); }
             }
@@ -169,6 +193,7 @@ public class MyFrame extends JFrame implements ActionListener {
                     System.out.println("You moved to " + room.charAt(playerChar));
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
+                        System.out.println(room + "\n");
                     } else {  System.out.println("You've won!"); }
                 } else { System.out.println("You can't"); }
             }

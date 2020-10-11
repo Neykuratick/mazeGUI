@@ -1,16 +1,11 @@
 import java.io.FileNotFoundException;
-import java.util.Random;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-
         new MyFrame();
-
-//        for (int i=0; i < 10; i++) {
-//            System.out.println(i);
-//        }
-
-        Methods.afterProccesing(12, 8);
     }
 }
