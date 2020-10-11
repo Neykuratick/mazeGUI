@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Methods {
 
@@ -33,21 +36,15 @@ public class Methods {
         return count;
     }
 
-    public static int[] findPlayerChar(String room) {
-        int chars = countStringChars(room);
+    public static int[] findPlayerChar(String room, int cols, int lines, char whatToFind) {
+
         int pos = 0;
         int[] result = new int[3];
 
+        while (room.charAt(pos) != whatToFind) { pos++; }
 
-        for (int i = 0; i < chars; ++i) {
-            if (room.charAt(i) == '*') {
-                pos += i;
-                break;
-            }
-        }
-
-        result[0] = pos/14; // line
-        result[1] = pos - result[0]*13; // column
+        result[0] = pos/(cols+1); // line
+        result[1] = pos - result[0]*(cols+1); // column
         result[2] = pos;
         
         return result;
@@ -59,7 +56,7 @@ public class Methods {
         return myString.toString();
     }
 
-    public static void generaterator(int columns, int lines) {
+    public static String generaterator(int columns, int lines) {
         Random rand = new Random();
         
         // generating exit
@@ -174,10 +171,39 @@ public class Methods {
             }
         }
 
-        System.out.println(level);
+        return level;
 
     }
 
+    public static void afterProccesing(int columns, int lines) throws FileNotFoundException {
+        // room
+        File file = new File("src/levels.dat");
+        Scanner scanFile = new Scanner(file);
+        String room = "";
+        while (scanFile.hasNextLine()) {
+            room = room.concat(scanFile.nextLine() + "\n");
+        }
+        System.out.println(room);
+        System.out.println("");
+
+        int cursor = 0;
+        while (room.charAt(cursor) != 'E') { cursor++; }
+        int charExit = cursor;
+        int toReplace = columns+1 + charExit;
+        room = replaceChar(room, '.', toReplace);
+
+
+        cursor = 0;
+        while (room.charAt(cursor) != '.') { cursor++; }
+        int charDot = cursor;
+
+        int neededY = charDot/(columns+1);
+        int neededX = charDot - neededY*(columns+1);
+        System.out.println(neededX);
+        System.out.println(neededY);
+        room = replaceChar(room, 'L', charDot);
+        System.out.println(room);
+    }
 
 
 

@@ -34,9 +34,9 @@ public class MyFrame extends JFrame implements ActionListener {
             room = room.concat(scanFile.nextLine() + "\n");
         }
 
-        playerY = Methods.findPlayerChar(room)[0];
-        playerX = Methods.findPlayerChar(room)[1];
-        playerChar = Methods.findPlayerChar(room)[2];
+        playerY = Methods.findPlayerChar(room, columns, lines, '*')[0];
+        playerX = Methods.findPlayerChar(room, columns, lines, '*')[1];
+        playerChar = Methods.findPlayerChar(room, columns, lines, '*')[2];
 
         // frame constants
         int canvasWidth = 600; int canvasHeight = 600;
@@ -158,7 +158,7 @@ public class MyFrame extends JFrame implements ActionListener {
 
         if (e.getSource() == rightB) {
 
-            if (playerX > columns - 1) {
+            if (playerX < columns - 1) {
                 int newPlayerX = playerX + 1;
                 int newPlayerChar = playerY * (columns + 1) + newPlayerX;
 
