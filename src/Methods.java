@@ -1,5 +1,8 @@
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -209,7 +212,82 @@ public class Methods {
         return charInt;
     }
 
-    public static String afterProccesing(int columns, int lines){
+    public static int readConfig(String configPath, int what) throws IOException {
+        Random rand = new Random();
+        FileInputStream fis = new FileInputStream(configPath);
+        Properties prop = new Properties();
+        prop.load(fis);
+
+        // collecting info
+        String keysString = prop.getProperty("Keys");
+        int keys = Integer.parseInt(keysString);
+
+        String tresString = prop.getProperty("Treasures");
+        int tres = Integer.parseInt(tresString);
+
+        String trapsString = prop.getProperty("Traps");
+        int traps = Integer.parseInt(trapsString);
+
+        String movesString = prop.getProperty("Moves");
+        int moves = Integer.parseInt(movesString);
+
+        switch (what) {
+            case 1:
+                return keys;
+            case 2:
+                return tres;
+            case 3:
+                return moves;
+            default:
+                return keys;
+        }
+
+    }
+
+    public static String keysAndTreasures(String room, String configPath) throws IOException {
+        Random rand = new Random();
+        FileInputStream fis = new FileInputStream(configPath);
+        Properties prop = new Properties();
+        prop.load(fis);
+
+        // collecting info
+        String keysString = prop.getProperty("Keys");
+        int keys = Integer.parseInt(keysString);
+
+        String tresString = prop.getProperty("Treasures");
+        int tres = Integer.parseInt(tresString);
+
+        String trapsString = prop.getProperty("Traps");
+        int traps = Integer.parseInt(trapsString);
+
+        String movesString = prop.getProperty("Moves");
+        int moves = Integer.parseInt(movesString);
+
+
+        // spawning, defining free cells
+        int charsInRoom = countStringChars(room);
+        int[] freeCells;
+        freeCells = new int[charsInRoom];
+
+        for (int i = 0; i < charsInRoom; i++) {
+            if (room.charAt(i) == '.') {
+                appendArray(freeCells, charsInRoom, i);
+            }
+        }
+
+        // keys
+        for (int i = 0; i < keys; i++) {
+            int placeToSpawn = 0;
+            while (placeToSpawn == 0) {
+                placeToSpawn = freeCells[rand.nextInt(charsInRoom)];
+            }
+            room = replaceChar(room, 'K', placeToSpawn);
+        }
+
+        return room;
+    }
+
+    public static String afterProccesing(int columns, int lines, String config, String configPath) throws IOException {
         Random rand = new Random();
 
         String room = generaterator(columns, lines);
@@ -310,6 +388,8 @@ public class Methods {
             }
         }
 
+        room = keysAndTreasures(room, configPath);
+
         return room;
     }
 
@@ -326,6 +406,22 @@ public class Methods {
         } catch(Exception e) {
             return  "nul";
         }
+    }
+
+    public static int[] cellHandler(char charr, int[] playerStats) { // keys, tres, moves, is won
+        System.out.println("You moved to " + charr);
+
+        if (charr == 'K') {
+            playerStats[0] += 1;
+            System.out.println(playerStats[0]);
+        }
+
+        if (charr == 'E' && playerStats[0] > 0) {
+            System.out.println("You won!");
+            playerStats[3] = 1;
+        }
+
+        return playerStats;
     }
 
 }

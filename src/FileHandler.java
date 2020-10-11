@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class FileHandler {
 
-    public static void writer() {
+    public static void writer(String config, String configPath) {
 
         try {
             File myObj = new File("src/generatedlvl.dat");
@@ -19,7 +19,7 @@ public class FileHandler {
 
         try {
             FileWriter myWriter = new FileWriter("src/generatedlvl.dat");
-            String room = Methods.afterProccesing(12, 8);
+            String room = Methods.afterProccesing(12, 8, config, configPath);
             myWriter.write(room);
             myWriter.close();
         } catch (IOException e) {
@@ -39,7 +39,7 @@ public class FileHandler {
 
         try {
             FileWriter myWriter = new FileWriter("src/config.ini");
-            myWriter.write("Keys=0\nTreasures=0");
+            myWriter.write("Keys = 0\nTreasures = 0\nTraps = 0\nMoves = 100");
             myWriter.close();
         } catch (IOException e) {
             System.out.println("Shit, all's wrong");

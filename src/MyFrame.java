@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class MyFrame extends JFrame implements ActionListener {
@@ -20,10 +21,12 @@ public class MyFrame extends JFrame implements ActionListener {
     JButton generateWorld;
     String room;
     String config;
-    String configDefault;
+    String confipPath = "src/config.ini";
+    String levelPath = "src/generatedlvl.dat";
     JFrame canvas;
     JTextArea textArea;
     JTextArea keysInput;
+    int charE;
 
     int columns = 12;
     int lines = 8;
@@ -31,24 +34,26 @@ public class MyFrame extends JFrame implements ActionListener {
     int playerChar;
     int playerY;
     int playerX;
+    int[] playerStats = new int[3]; // keys, tres, moves
 
 
-    MyFrame() throws FileNotFoundException {
+    MyFrame() throws IOException {
 
-        File f = new File("src/config.ini");
+        File f = new File(confipPath);
         if(!f.exists()) {
             FileHandler.createConfig();
-            config = Methods.scanFile("src/config.ini");
+            config = Methods.scanFile(confipPath);
         }
 
-        if (Methods.scanFile("src/generatedlvl.dat").equals("nul")) {
+        if (Methods.scanFile(levelPath).equals("nul")) {
             System.out.println("Error");
-            FileHandler.writer();
-            room = Methods.scanFile("src/generatedlvl.dat");
-        } else { room = Methods.scanFile("src/generatedlvl.dat"); }
+            FileHandler.writer(config, confipPath);
+            room = Methods.scanFile(levelPath);
+        } else { room = Methods.scanFile(levelPath); }
 
 
-        config = Methods.scanFile("src/config.ini");
+        config = Methods.scanFile(confipPath);
+        playerStats[2] = Methods.readConfig(confipPath, 3);
 
         System.out.println(room);
 
@@ -59,8 +64,6 @@ public class MyFrame extends JFrame implements ActionListener {
         } else {
             System.out.println("Error");
         }
-
-        System.out.println("PlayerY: " + playerX + " PlayerX: " + playerX);
 
         // frame constants
         int canvasWidth = 600; int canvasHeight = 600;
@@ -141,9 +144,9 @@ public class MyFrame extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == generateWorld) {
-            FileHandler.writer();
+            FileHandler.writer(config, confipPath);
             try {
-                room = Methods.scanFile("src/generatedlvl.dat");
+                room = Methods.scanFile(levelPath);
             } catch (FileNotFoundException fileNotFoundException) {
                 System.out.println("Not found");
             }
@@ -151,6 +154,14 @@ public class MyFrame extends JFrame implements ActionListener {
             playerY = Methods.findPlayerChar(room, columns, lines, '*')[0];
             playerX = Methods.findPlayerChar(room, columns, lines, '*')[1];
             playerChar = Methods.findPlayerChar(room, columns, lines, '*')[2];
+            playerStats[0] = 0; playerStats[1] = 0;
+
+            try {
+                playerStats[2] = Methods.readConfig(confipPath, 3);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+
             System.out.println(room);
             textArea.setText(room);
         }
@@ -165,13 +176,14 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerY = newPlayerY;
                     playerChar = playerY * (columns + 1) + playerX;
-                    System.out.println("You moved to " + room.charAt(playerChar));
+                    Methods.cellHandler(room.charAt(playerChar), playerStats);
+
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
-                        System.out.println(room + "\n");
+                        System.out.println(room);
                     } else {  System.out.println("You've won!"); }
 
-                } else { System.out.println("You can't. Your line = " + playerY + "Your col = " + playerX); }
+                } else { System.out.println("You can't."); }
             }
 
             textArea.setText(room);
@@ -187,10 +199,11 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerY = newPlayerY;
                     playerChar = playerY * (columns + 1) + playerX;
-                    System.out.println("You moved to " + room.charAt(playerChar));
+                    Methods.cellHandler(room.charAt(playerChar), playerStats);
+
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
-                        System.out.println(room + "\n");
+                        System.out.println(room);
                     } else {  System.out.println("You've won!"); }
 
                 } else { System.out.println("You can't"); }
@@ -209,10 +222,11 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerX = newPlayerX;
                     playerChar = playerY * (columns + 1) + playerX;
-                    System.out.println("You moved to " + room.charAt(playerChar));
+                    Methods.cellHandler(room.charAt(playerChar), playerStats);
+
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
-                        System.out.println(room + "\n");
+                        System.out.println(room);
                     } else {  System.out.println("You've won!"); }
                 } else { System.out.println("You can't"); }
             }
@@ -230,12 +244,17 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerX = newPlayerX;
                     playerChar = playerY * (columns + 1) + playerX;
-                    System.out.println("You moved to " + room.charAt(playerChar));
+                    Methods.cellHandler(room.charAt(playerChar), playerStats);
+
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
-                        System.out.println(room + "\n");
+                        System.out.println(room);
                     } else {  System.out.println("You've won!"); }
                 } else { System.out.println("You can't"); }
+            }
+
+            if (room.charAt(playerChar) == 'K') {
+                System.out.println("You found a key!");
             }
 
             textArea.setText(room);
