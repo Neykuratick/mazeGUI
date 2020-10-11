@@ -18,10 +18,14 @@ public class MyFrame extends JFrame implements ActionListener {
     String config;
     String configPath = "src/files/config.ini";
     String levelPath = "src/files/generatedlvl.dat";
+    public String stats;
     JFrame canvas;
     public static JTextArea textArea;
+    public static JTextArea textStats;
     JTextArea keysInput;
     int charE;
+    int keysAmount;
+    int tresAmount;
 
     int columns = 12;
     int lines = 8;
@@ -29,7 +33,7 @@ public class MyFrame extends JFrame implements ActionListener {
     int playerChar;
     int playerY;
     int playerX;
-    int[] playerStats = new int[4]; // keys, tres, moves, is won
+    public static int[] playerStats = new int[4]; // 0 keys, 1 treasures, 2 moves, 3 is won
 
 
     MyFrame() throws IOException {
@@ -48,7 +52,7 @@ public class MyFrame extends JFrame implements ActionListener {
 
 
         config = Methods.scanFile(configPath);
-        playerStats[2] = Methods.readConfig(configPath, 3);
+        playerStats[2] = FileHandler.readConfig(configPath, 3);
 
         System.out.println(room);
 
@@ -57,9 +61,16 @@ public class MyFrame extends JFrame implements ActionListener {
             playerX = Methods.findSpecificChar(room, columns, lines, '*')[1];
             playerChar = Methods.findSpecificChar(room, columns, lines, '*')[2];
             charE = Methods.findSpecificChar(room, columns, lines, 'E')[2];
+            try {playerStats[2] = FileHandler.readConfig(configPath, 5);}
+            catch (IOException ioException) {ioException.printStackTrace();}
         } else {
             System.out.println("Error");
         }
+
+        // assigning stats
+        keysAmount = FileHandler.readConfig(configPath, 1);
+        tresAmount = FileHandler.readConfig(configPath, 2);
+        stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
 
         // frame constants
         int canvasWidth = 600; int canvasHeight = 600;
@@ -117,8 +128,13 @@ public class MyFrame extends JFrame implements ActionListener {
         keysInput.setFont(new Font("JetBrainsMono", Font.PLAIN, 15));
         keysInput.setColumns(columns);
 
+        textStats = new JTextArea(stats);
+        textStats.setEditable(false);
+        textStats.setFont(new Font("JetBrainsMono", Font.PLAIN, 15));
+        textStats.setColumns(columns);
 
-        canvas.add(logo);
+
+        canvas.add(textStats);
         canvas.add(textArea);
         canvas.add(keysInput);
         canvas.add(saveB);
@@ -153,13 +169,18 @@ public class MyFrame extends JFrame implements ActionListener {
             charE = Methods.findSpecificChar(room, columns, lines, 'E')[2];
             playerStats[0] = 0; playerStats[1] = 0; playerStats[3] = 0;
 
+            try {playerStats[2] = FileHandler.readConfig(configPath, 5);}
+            catch (IOException ioException) {ioException.printStackTrace();}
+
             try {
-                playerStats[2] = Methods.readConfig(configPath, 3);
+                playerStats[2] = FileHandler.readConfig(configPath, 3);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
 
             System.out.println(room);
+            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            textStats.setText(stats);
             textArea.setText(room);
         }
 
@@ -185,6 +206,8 @@ public class MyFrame extends JFrame implements ActionListener {
                 }  else { System.out.println("You can't"); }
             }
 
+            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            textStats.setText(stats);
             textArea.setText(room);
         }
 
@@ -211,6 +234,9 @@ public class MyFrame extends JFrame implements ActionListener {
 
                 } else { System.out.println("You can't"); }
             }
+
+            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            textStats.setText(stats);
             textArea.setText(room);
         }
 
@@ -235,6 +261,8 @@ public class MyFrame extends JFrame implements ActionListener {
                 } else { System.out.println("You can't"); }
             }
 
+            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            textStats.setText(stats);
             textArea.setText(room);
         }
 
@@ -262,6 +290,9 @@ public class MyFrame extends JFrame implements ActionListener {
             if (room.charAt(playerChar) == 'K') {
                 System.out.println("You found a key!");
             }
+
+            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            textStats.setText(stats);
             textArea.setText(room);
         }
     }

@@ -6,7 +6,7 @@ import java.util.Random;
 public class Generate {
     public static String generaterator(int columns, int lines, String configPath) throws IOException {
         Random rand = new Random();
-        int difficulty = Methods.readConfig(configPath, 4);
+        int difficulty = FileHandler.readConfig(configPath, 4);
         if (difficulty > 10) { difficulty = 10; } else if (difficulty < 1) { difficulty = 1; }
 
         // generating exit
@@ -254,40 +254,54 @@ public class Generate {
 
         // spawning, defining free cells
         int charsInRoom = Methods.countStringChars(room);
+        int freeCellsCount = 0;
         int[] freeCells;
         freeCells = new int[charsInRoom];
 
         for (int i = 0; i < charsInRoom; i++) {
             if (room.charAt(i) == '.') {
                 Methods.appendArray(freeCells, charsInRoom, i);
+                freeCellsCount++;
             }
         }
 
         // keys
-        for (int i = 0; i < keys; i++) {
+        while(keys > 0 && freeCellsCount > 0) {
             int placeToSpawn = 0;
             while (placeToSpawn == 0) {
                 placeToSpawn = freeCells[rand.nextInt(charsInRoom)];
             }
-            room = Methods.replaceChar(room, 'K', placeToSpawn);
+            if (room.charAt(placeToSpawn) == '.') {
+                room = Methods.replaceChar(room, 'K', placeToSpawn);
+                keys--;
+                freeCellsCount--;
+            }
         }
 
         // tres
-        for (int i = 0; i < treasures; i++) {
+        while(treasures > 0 && freeCellsCount > 0) {
             int placeToSpawn = 0;
             while (placeToSpawn == 0) {
                 placeToSpawn = freeCells[rand.nextInt(charsInRoom)];
             }
-            room = Methods.replaceChar(room, 'T', placeToSpawn);
+            if (room.charAt(placeToSpawn) == '.') {
+                room = Methods.replaceChar(room, 'T', placeToSpawn);
+                treasures--;
+                freeCellsCount--;
+            }
         }
 
         // traps
-        for (int i = 0; i < traps; i++) {
+        while(traps > 0 && freeCellsCount > 0) {
             int placeToSpawn = 0;
             while (placeToSpawn == 0) {
                 placeToSpawn = freeCells[rand.nextInt(charsInRoom)];
             }
-            room = Methods.replaceChar(room, 'X', placeToSpawn);
+            if (room.charAt(placeToSpawn) == '.') {
+                room = Methods.replaceChar(room, 'X', placeToSpawn);
+                traps--;
+                freeCellsCount--;
+            }
         }
 
         return room;

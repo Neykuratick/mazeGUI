@@ -5,7 +5,8 @@ public class PlayerController {
     public static int[] cellHandler(char charr, int[] playerStats, String configPath) throws IOException { // keys, tres, moves, is won
         // System.out.println("You moved to " + charr);
 
-        int keys = Methods.readConfig(configPath, 1);
+        int keys = FileHandler.readConfig(configPath, 1);
+        MyFrame.playerStats[2] -= 1;
 
         if (charr == 'K') {
             playerStats[0] += 1;

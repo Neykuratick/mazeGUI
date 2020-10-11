@@ -88,47 +88,7 @@ public class Methods {
                 break;
             }
         }
-
         return charInt;
-    }
-
-    public static int readConfig(String configPath, int row) throws IOException {
-        Random rand = new Random();
-        FileInputStream fis = new FileInputStream(configPath);
-        Properties prop = new Properties();
-        prop.load(fis);
-
-        // collecting info
-        String keysString = prop.getProperty("Keys");
-        int keys = Integer.parseInt(keysString);
-
-        String tresString = prop.getProperty("Treasures");
-        int tres = Integer.parseInt(tresString);
-
-        String trapsString = prop.getProperty("Traps");
-        int traps = Integer.parseInt(trapsString);
-
-        String movesString = prop.getProperty("Moves");
-        int moves = Integer.parseInt(movesString);
-
-        String difficultyString = prop.getProperty("Difficulty");
-        int difficulty = Integer.parseInt(difficultyString);
-
-        switch (row) {
-            case 1:
-                return keys;
-            case 2:
-                return tres;
-            case 3:
-                return traps;
-            case 4:
-                return difficulty;
-            case 5:
-                return moves;
-            default:
-                return keys;
-        }
-
     }
 
     public static boolean canPlaceAsterics(char charr) {
@@ -140,6 +100,15 @@ public class Methods {
             result = false;
         }
         return result;
+    }
+
+    public static String getStatistics(int moves, int keys, int keysCollected, int treasures, int treasuresCollected) {
+        int keysLeft = keys - keysCollected;
+        int tresLeft = treasures - treasuresCollected;
+        String stats = "Your moves: " + moves + "\n" +
+                        "Keys left: " + keysLeft + "\n" +
+                        "Treasures colleted: " + tresLeft;
+        return stats;
     }
 
     public static String scanFile(String filePath) throws FileNotFoundException {
