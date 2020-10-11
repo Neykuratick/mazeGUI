@@ -40,7 +40,7 @@ public class FileHandler {
 
         try {
             FileWriter myWriter = new FileWriter(configPath);
-            myWriter.write("Keys = 0\nTreasures = 0\nTraps = 0\nDifficulty = 4\nMoves = 100");
+            myWriter.write("Keys = 0\nTreasures = 0\nTraps = 0\nDifficulty = 4\nMoves = 30");
             myWriter.close();
         } catch (IOException e) {
             System.out.println("Shit, everything's wrong");

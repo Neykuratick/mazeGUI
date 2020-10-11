@@ -95,20 +95,10 @@ public class Methods {
         boolean result = false;
         if (charr == '.' || charr == 'K' || charr == 'T' || charr == 'X') {
             result = true;
-        } else if (charr == 'E' || charr == 'Y' || charr == 'o' || charr == 'u'
-                || charr == 'h' || charr == 'a' || charr == 'w' || charr == 'n') {
+        } else {
             result = false;
         }
         return result;
-    }
-
-    public static String getStatistics(int moves, int keys, int keysCollected, int treasures, int treasuresCollected) {
-        int keysLeft = keys - keysCollected;
-        int tresLeft = treasures - treasuresCollected;
-        String stats = "Your moves: " + moves + "\n" +
-                        "Keys left: " + keysLeft + "\n" +
-                        "Treasures colleted: " + tresLeft;
-        return stats;
     }
 
     public static String scanFile(String filePath) throws FileNotFoundException {

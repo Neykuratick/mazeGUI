@@ -33,7 +33,7 @@ public class MyFrame extends JFrame implements ActionListener {
     int playerChar;
     int playerY;
     int playerX;
-    public static int[] playerStats = new int[4]; // 0 keys, 1 treasures, 2 moves, 3 is won
+    public static int[] playerStats = new int[4]; // 0 keys, 1 treasures, 2 moves, 3 won\lose (-1 to 1)
 
 
     MyFrame() throws IOException {
@@ -70,7 +70,7 @@ public class MyFrame extends JFrame implements ActionListener {
         // assigning stats
         keysAmount = FileHandler.readConfig(configPath, 1);
         tresAmount = FileHandler.readConfig(configPath, 2);
-        stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+        stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
 
         // frame constants
         int canvasWidth = 600; int canvasHeight = 600;
@@ -172,19 +172,13 @@ public class MyFrame extends JFrame implements ActionListener {
             try {playerStats[2] = FileHandler.readConfig(configPath, 5);}
             catch (IOException ioException) {ioException.printStackTrace();}
 
-            try {
-                playerStats[2] = FileHandler.readConfig(configPath, 3);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-
             System.out.println(room);
-            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
             textStats.setText(stats);
             textArea.setText(room);
         }
 
-        if (e.getSource() == upB && playerStats[3] == 0) {
+        if (e.getSource() == upB && playerStats[3] == 0 && playerStats[2] > 0) {
 
             if (playerY > 0) {
                 int newPlayerY = playerY - 1;
@@ -206,12 +200,12 @@ public class MyFrame extends JFrame implements ActionListener {
                 }  else { System.out.println("You can't"); }
             }
 
-            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
             textStats.setText(stats);
             textArea.setText(room);
         }
 
-        if (e.getSource() == downB && playerStats[3] == 0) {
+        if (e.getSource() == downB && playerStats[3] == 0 && playerStats[2] > 0) {
 
             if (playerY < lines - 1) {
                 int newPlayerY = playerY + 1;
@@ -227,7 +221,7 @@ public class MyFrame extends JFrame implements ActionListener {
                     try {PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);}
                     catch (IOException ioException) {ioException.printStackTrace();}
 
-                    if (Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
+                    if (playerStats[3] == 0 && Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
                         System.out.println(room);
                     }
@@ -235,12 +229,12 @@ public class MyFrame extends JFrame implements ActionListener {
                 } else { System.out.println("You can't"); }
             }
 
-            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
             textStats.setText(stats);
             textArea.setText(room);
         }
 
-        if (e.getSource() == leftB && playerStats[3] == 0) {
+        if (e.getSource() == leftB && playerStats[3] == 0 && playerStats[2] > 0) {
 
             if (playerX > 1) {
                 int newPlayerX = playerX - 1;
@@ -254,19 +248,19 @@ public class MyFrame extends JFrame implements ActionListener {
                     try {PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);}
                     catch (IOException ioException) {ioException.printStackTrace();}
 
-                    if (Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
+                    if (playerStats[3] == 0 && Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
                         System.out.println(room);
                     }
                 } else { System.out.println("You can't"); }
             }
 
-            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
             textStats.setText(stats);
             textArea.setText(room);
         }
 
-        if (e.getSource() == rightB && playerStats[3] == 0) {
+        if (e.getSource() == rightB && playerStats[3] == 0 && playerStats[2] > 0) {
 
             if (playerX < columns - 1) {
                 int newPlayerX = playerX + 1;
@@ -280,18 +274,18 @@ public class MyFrame extends JFrame implements ActionListener {
                     try {PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);}
                     catch (IOException ioException) {ioException.printStackTrace();}
 
-                    if (Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
+                    if (playerStats[3] == 0 && Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
                         System.out.println(room);
                     }
                 } else { System.out.println("You can't"); }
             }
 
-            if (room.charAt(playerChar) == 'K') {
+            if (playerStats[3] != -1 && room.charAt(playerChar) == 'K') {
                 System.out.println("You found a key!");
             }
 
-            stats = Methods.getStatistics(playerStats[2], keysAmount, playerStats[0], tresAmount, playerStats[1]);
+            stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
             textStats.setText(stats);
             textArea.setText(room);
         }
