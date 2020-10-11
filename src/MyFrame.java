@@ -1,15 +1,10 @@
-import org.w3c.dom.ls.LSOutput;
-
 import javax.swing.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class MyFrame extends JFrame implements ActionListener {
 
@@ -58,9 +53,10 @@ public class MyFrame extends JFrame implements ActionListener {
         System.out.println(room);
 
         if (!room.equals("nul")) {
-            playerY = Methods.findPlayerChar(room, columns, lines, '*')[0];
-            playerX = Methods.findPlayerChar(room, columns, lines, '*')[1];
-            playerChar = Methods.findPlayerChar(room, columns, lines, '*')[2];
+            playerY = Methods.findSpecificChar(room, columns, lines, '*')[0];
+            playerX = Methods.findSpecificChar(room, columns, lines, '*')[1];
+            playerChar = Methods.findSpecificChar(room, columns, lines, '*')[2];
+            charE = Methods.findSpecificChar(room, columns, lines, 'E')[2];
         } else {
             System.out.println("Error");
         }
@@ -151,9 +147,10 @@ public class MyFrame extends JFrame implements ActionListener {
                 System.out.println("Not found");
             }
 
-            playerY = Methods.findPlayerChar(room, columns, lines, '*')[0];
-            playerX = Methods.findPlayerChar(room, columns, lines, '*')[1];
-            playerChar = Methods.findPlayerChar(room, columns, lines, '*')[2];
+            playerY = Methods.findSpecificChar(room, columns, lines, '*')[0];
+            playerX = Methods.findSpecificChar(room, columns, lines, '*')[1];
+            playerChar = Methods.findSpecificChar(room, columns, lines, '*')[2];
+            charE = Methods.findSpecificChar(room, columns, lines, 'E')[2];
             playerStats[0] = 0; playerStats[1] = 0;
 
             try {
@@ -256,10 +253,7 @@ public class MyFrame extends JFrame implements ActionListener {
             if (room.charAt(playerChar) == 'K') {
                 System.out.println("You found a key!");
             }
-
             textArea.setText(room);
         }
-
-
     }
 }

@@ -1,8 +1,6 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class FileHandler {
 
@@ -23,7 +21,7 @@ public class FileHandler {
             myWriter.write(room);
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("Shit, all's wrong");
+            System.out.println("Shit, everything's wrong");
         }
     }
 
@@ -42,7 +40,7 @@ public class FileHandler {
             myWriter.write("Keys = 0\nTreasures = 0\nTraps = 0\nMoves = 100");
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("Shit, all's wrong");
+            System.out.println("Shit, everything's wrong");
         }
     }
 
@@ -52,7 +50,7 @@ public class FileHandler {
             myWriter.write(str);
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("Shit, all's wrong");
+            System.out.println("Shit, everything's wrong");
         }
     }
 }

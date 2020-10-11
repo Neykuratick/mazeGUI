@@ -50,7 +50,7 @@ public class Methods {
         return count;
     }
 
-    public static int[] findPlayerChar(String room, int cols, int lines, char whatToFind) {
+    public static int[] findSpecificChar(String room, int cols, int lines, char whatToFind) {
 
         int pos = 0;
         int[] result = new int[3];
@@ -255,7 +255,7 @@ public class Methods {
         int keys = Integer.parseInt(keysString);
 
         String tresString = prop.getProperty("Treasures");
-        int tres = Integer.parseInt(tresString);
+        int treasures = Integer.parseInt(tresString);
 
         String trapsString = prop.getProperty("Traps");
         int traps = Integer.parseInt(trapsString);
@@ -282,6 +282,24 @@ public class Methods {
                 placeToSpawn = freeCells[rand.nextInt(charsInRoom)];
             }
             room = replaceChar(room, 'K', placeToSpawn);
+        }
+
+        // tres
+        for (int i = 0; i < treasures; i++) {
+            int placeToSpawn = 0;
+            while (placeToSpawn == 0) {
+                placeToSpawn = freeCells[rand.nextInt(charsInRoom)];
+            }
+            room = replaceChar(room, 'T', placeToSpawn);
+        }
+
+        // traps
+        for (int i = 0; i < traps; i++) {
+            int placeToSpawn = 0;
+            while (placeToSpawn == 0) {
+                placeToSpawn = freeCells[rand.nextInt(charsInRoom)];
+            }
+            room = replaceChar(room, 'X', placeToSpawn);
         }
 
         return room;
