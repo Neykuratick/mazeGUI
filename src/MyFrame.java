@@ -29,7 +29,7 @@ public class MyFrame extends JFrame implements ActionListener {
     int playerChar;
     int playerY;
     int playerX;
-    int[] playerStats = new int[4]; // keys, tres, moves, is won
+    int[] playerStats = new int[3]; // keys, tres, moves
 
 
     MyFrame() throws IOException {
@@ -173,18 +173,14 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerY = newPlayerY;
                     playerChar = playerY * (columns + 1) + playerX;
-
-                    try {
-                        PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+                    Methods.cellHandler(room.charAt(playerChar), playerStats, configPath);
 
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
                         System.out.println(room);
-                    }
-                }
+                    } else {  System.out.println("You've won!"); }
+
+                } else { System.out.println("You can't."); }
             }
 
             textArea.setText(room);
@@ -200,12 +196,7 @@ public class MyFrame extends JFrame implements ActionListener {
                     room = Methods.replaceChar(room, '.', playerChar);
                     playerY = newPlayerY;
                     playerChar = playerY * (columns + 1) + playerX;
-
-                    try {
-                        PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+                    Methods.cellHandler(room.charAt(playerChar), playerStats, configPath);
 
                     if (room.charAt(newPlayerChar) != 'E') {
                         room = Methods.replaceChar(room, '*', playerChar);
@@ -230,7 +221,7 @@ public class MyFrame extends JFrame implements ActionListener {
                     playerChar = playerY * (columns + 1) + playerX;
 
                     try {
-                        PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);
+                        Methods.cellHandler(room.charAt(playerChar), playerStats, configPath);
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
@@ -257,7 +248,7 @@ public class MyFrame extends JFrame implements ActionListener {
                     playerChar = playerY * (columns + 1) + playerX;
 
                     try {
-                        PlayerController.cellHandler(room.charAt(playerChar), playerStats, configPath);
+                        Methods.cellHandler(room.charAt(playerChar), playerStats, configPath);
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }
