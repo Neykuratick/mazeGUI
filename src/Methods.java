@@ -66,11 +66,40 @@ public class Methods {
 
         boolean lastLine = false;
 
+        boolean levelMeta[];
+        levelMeta = new boolean[columns];
+        boolean level2Meta[];
+        level2Meta = new boolean[columns];
+
         for (int i=0; i < lines-1; i++) {
 
-            int freeCells = 0; while(freeCells == 0) { freeCells = rand.nextInt(10); }
+            int freeCells = 0; while(freeCells == 0) { freeCells = rand.nextInt(columns-2); }
             int freeCellsStartBound = (columns-1) - freeCells;
             int freeCellsStart = rand.nextInt(freeCellsStartBound);
+
+            // assigning cells to cells
+            boolean isDoorPathExist = false;
+            while (!isDoorPathExist) {
+                for (int k = 0; k < columns; k++) {
+                    boolean isTaken = rand.nextBoolean();
+                    levelMeta[k] = isTaken;
+                }
+
+                for (int k = 0; k < columns; k++) {
+                    boolean isTaken = rand.nextBoolean();
+                    level2Meta[k] = isTaken;
+                }
+
+                // checking if mathing
+                for (int k = 0; k < columns; k++) {
+                    for (int kk = 0; kk < columns; kk++) {
+                        if (levelMeta[k] == level2Meta[kk]) {
+                            isDoorPathExist = true;
+                        }
+                    }
+                }
+            }
+
             if (i == lines-2) {
                 lastLine = true;
             }
