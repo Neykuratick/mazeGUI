@@ -54,7 +54,7 @@ public class Methods {
         Random rand = new Random();
         
         // generating exit
-        int charE = 0; while (charE == 0) { charE = rand.nextInt(columns); }
+        int charE = 0; while (charE == 0 || charE == columns) { charE = rand.nextInt(columns); }
         String level = "";
 
         for(int i=0; i < columns; i++) {
@@ -70,6 +70,8 @@ public class Methods {
             }
         }
 
+
+        // generating the rest
         boolean lastLine = false;
 
         int levelMetaBoolCount = columns+1;
@@ -84,7 +86,8 @@ public class Methods {
 
         for (int i=0; i < lines-1; i++) {
 
-            int freeCells = 0; while(freeCells == 0) { freeCells = rand.nextInt(columns-4); }
+            int freeCells = 0; while(freeCells == 0) { freeCells = rand.nextInt(columns-3); }
+            --freeCells;
             int freeCellsStartBound = (columns-1) - freeCells;
             int freeCellsStart = rand.nextInt(freeCellsStartBound);
 
@@ -119,7 +122,6 @@ public class Methods {
                         isDoorPathExist = true;
                     }
                 }
-
             }
 
             if (i == lines-2) {
@@ -127,40 +129,48 @@ public class Methods {
             }
 
             // picking a door
-            int doorPick = 0;
-            while (doorPick == 0) {
-                doorPick = rand.nextInt(levelMetaBoolCount);
+            while (true) {
+                if (i % 2 == 0) {
+                        door = foundDoors[rand.nextInt(levelMetaBoolCount)];
+                        if (door > 0) {
+                            break;
+                        }
+                }
+                break;
             }
 
-            System.out.println(doorPick);
+            boolean placed = false;
+            boolean playerPlaced = false;
 
             for (int j=0; j < columns+1; j++) {
 
-                if (j == 0 && !lastLine) {
-                    level += "#";
-                }
-
-                else if (j >= freeCellsStart && j < columns && freeCells > 0 && !lastLine || j == doorPick) {
-                    level += ".";
-                    freeCells -= 1;
-                }
-
-                else if (j == columns-1 && !lastLine) {
-                    level += "#";
-                }
-
-                else if (j == columns && !lastLine) {
+                if (j == columns && !lastLine) {
                     level += "\n";
                 }
 
-                else if (lastLine && j != 0) {
-                    level += '#';
+                if (i == 0 && j == charE && !placed) {
+                    if (i == lines-3 && !playerPlaced) { level += '*'; playerPlaced = true; } else
+                    level += '.';
+                    freeCells -= 1;
+                    placed = true;
                 }
 
-                else if (!lastLine) {
-                    level += '#';
+                else if (j == 0 || j == columns-1 || lastLine && !placed) {
+                    level += "#";
+                    placed = true;
                 }
 
+                else if (j >= freeCellsStart && j < columns-1 && freeCells > 0 && !lastLine || j == door && !placed) {
+                    if (i == lines-3 && !playerPlaced) { level += '*'; playerPlaced = true; } else
+                    level += ".";
+                    placed = true;
+                    freeCells -= 1;
+                }
+
+                else if (!lastLine && !placed) {
+                    level += '#';
+                    placed = true;
+                }
             }
         }
 
