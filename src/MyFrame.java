@@ -16,6 +16,13 @@ public class MyFrame extends JFrame implements ActionListener {
     JFrame canvas;
     JTextArea textArea;
 
+    int columns = 12;
+    int lines = 8;
+
+    int playerChar;
+    int playerY;
+    int playerX;
+
 
     MyFrame() throws FileNotFoundException {
 
@@ -27,6 +34,9 @@ public class MyFrame extends JFrame implements ActionListener {
             room = room.concat(scanFile.nextLine() + "\n");
         }
 
+        playerY = Methods.findPlayerChar(room)[0];
+        playerX = Methods.findPlayerChar(room)[1];
+        playerChar = Methods.findPlayerChar(room)[2];
 
         // frame constants
         int canvasWidth = 600; int canvasHeight = 600;
@@ -85,21 +95,85 @@ public class MyFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == upB) {
-            System.out.println("Up");
-            room = "lala";
+
+            if (playerY > -1) {
+                int newPlayerY = playerY - 1;
+                int newPlayerChar = newPlayerY * (columns + 1) + playerX;
+
+                if (room.charAt(newPlayerChar) != '#') {
+                    room = Methods.replaceChar(room, '.', playerChar);
+                    playerY = newPlayerY;
+                    playerChar = playerY * (columns + 1) + playerX;
+                    System.out.println("You moved to " + room.charAt(playerChar));
+                    if (room.charAt(newPlayerChar) != 'E') {
+                        room = Methods.replaceChar(room, '*', playerChar);
+                    } else {  System.out.println("You've won!"); }
+
+                } else { System.out.println("You can't"); }
+            }
+
             textArea.setText(room);
         }
 
         if (e.getSource() == downB) {
-            System.out.println("down");
+
+            if (playerY < lines - 1) {
+                int newPlayerY = playerY + 1;
+                int newPlayerChar = newPlayerY * (columns + 1) + playerX;
+
+                if (room.charAt(newPlayerChar) != '#') {
+                    room = Methods.replaceChar(room, '.', playerChar);
+                    playerY = newPlayerY;
+                    playerChar = playerY * (columns + 1) + playerX;
+                    System.out.println("You moved to " + room.charAt(playerChar));
+                    if (room.charAt(newPlayerChar) != 'E') {
+                        room = Methods.replaceChar(room, '*', playerChar);
+                    } else {  System.out.println("You've won!"); }
+
+                } else { System.out.println("You can't"); }
+            }
+
+            textArea.setText(room);
         }
 
         if (e.getSource() == leftB) {
-            System.out.println("left");
+
+            if (playerX > 1) {
+                int newPlayerX = playerX - 1;
+                int newPlayerChar = playerY * (columns + 1) + newPlayerX;
+
+                if (room.charAt(newPlayerChar) != '#') {
+                    room = Methods.replaceChar(room, '.', playerChar);
+                    playerX = newPlayerX;
+                    playerChar = playerY * (columns + 1) + playerX;
+                    System.out.println("You moved to " + room.charAt(playerChar));
+                    if (room.charAt(newPlayerChar) != 'E') {
+                        room = Methods.replaceChar(room, '*', playerChar);
+                    } else {  System.out.println("You've won!"); }
+                } else { System.out.println("You can't"); }
+            }
+
+            textArea.setText(room);
         }
 
         if (e.getSource() == rightB) {
-            System.out.println("right");
+
+            if (playerX > columns - 1) {
+                int newPlayerX = playerX + 1;
+                int newPlayerChar = playerY * (columns + 1) + newPlayerX;
+
+                if (room.charAt(newPlayerChar) != '#') {
+                    room = Methods.replaceChar(room, '.', playerChar);
+                    playerX = newPlayerX;
+                    playerChar = playerY * (columns + 1) + playerX;
+                    System.out.println("You moved to " + room.charAt(playerChar));
+                    if (room.charAt(newPlayerChar) != 'E') {
+                        room = Methods.replaceChar(room, '*', playerChar);
+                    } else {  System.out.println("You've won!"); }
+                } else { System.out.println("You can't"); }
+            }
+
+            textArea.setText(room);
         }
 
 
