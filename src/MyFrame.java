@@ -1,6 +1,8 @@
 import org.w3c.dom.ls.LSOutput;
 
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +16,12 @@ public class MyFrame extends JFrame implements ActionListener {
     JButton downB;
     JButton leftB;
     JButton rightB;
+    JButton saveB;
     JButton generateWorld;
     String room;
     JFrame canvas;
     JTextArea textArea;
+    JTextArea keysInput;
 
     int columns = 12;
     int lines = 8;
@@ -62,6 +66,10 @@ public class MyFrame extends JFrame implements ActionListener {
         generateWorld.setBounds(400, 300, 50, 50);
         generateWorld.addActionListener(this);
 
+        saveB = new JButton("Save Config");
+        saveB.setBounds(100, 100, 50, 50);
+        saveB.addActionListener(this);
+
         upB = new JButton("Up");
         upB.setBounds(100, 100, 50, 50);
         upB.addActionListener(this);
@@ -81,19 +89,26 @@ public class MyFrame extends JFrame implements ActionListener {
         rightB.setBounds(300, 100, 50, 50);
         rightB.addActionListener(this);
 
-        // textArea
+        // textAreas
         textArea = new JTextArea(room);
         textArea.setEditable(false);
-        textArea.setFont(new Font("Roboto", Font.PLAIN, 15));
+        textArea.setFont(new Font("JetBrainsMono", Font.PLAIN, 15));
+        textArea.setColumns(columns);
+
+        keysInput = new JTextArea("Keys: \nTreasures: ");
+        keysInput.setFont(new Font("JetBrainsMono", Font.PLAIN, 15));
+        keysInput.setColumns(columns);
 
 
         canvas.add(logo);
         canvas.add(textArea);
+        canvas.add(keysInput);
+        canvas.add(saveB);
         canvas.add(upB);
-        canvas.add(downB);
-        canvas.add(leftB);
-        canvas.add(rightB);
         canvas.add(generateWorld);
+        canvas.add(leftB);
+        canvas.add(downB);
+        canvas.add(rightB);
         canvas.setVisible(true);
     }
 

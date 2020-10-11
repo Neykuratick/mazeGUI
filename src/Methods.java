@@ -321,7 +321,6 @@ public class Methods {
         while (scanFile.hasNextLine()) {
             room = room.concat(scanFile.nextLine() + "\n");
         }
-
         return room;
     }
 
