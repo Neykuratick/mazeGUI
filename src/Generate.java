@@ -4,7 +4,7 @@ import java.util.Properties;
 import java.util.Random;
 
 public class Generate {
-    public static String generaterator(int columns, int lines, String configPath) throws IOException {
+    public static String generators(int columns, int lines, String configPath) throws IOException {
         Random rand = new Random();
         int difficulty = FileHandler.readConfig(configPath, 4);
         if (difficulty > 10) { difficulty = 10; } else if (difficulty < 1) { difficulty = 1; }
@@ -127,7 +127,7 @@ public class Generate {
     public static String world(int columns, int lines, String config, String configPath) throws IOException {
         Random rand = new Random();
 
-        String room = generaterator(columns, lines, configPath);
+        String room = generators(columns, lines, configPath);
 
         // finding Exit
         int cursor = 0;
