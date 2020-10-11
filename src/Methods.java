@@ -314,14 +314,18 @@ public class Methods {
     }
 
     public static String scanFile(String filePath) throws FileNotFoundException {
-        String room = "";
-        File file = new File(filePath);
-        Scanner scanFile = new Scanner(file);
-        room = "";
-        while (scanFile.hasNextLine()) {
-            room = room.concat(scanFile.nextLine() + "\n");
+        try {
+            String room = "";
+            File file = new File(filePath);
+            Scanner scanFile = new Scanner(file);
+            room = "";
+            while (scanFile.hasNextLine()) {
+                room = room.concat(scanFile.nextLine() + "\n");
+            }
+            return room;
+        } catch(Exception e) {
+            return  "nul";
         }
-        return room;
     }
 
 }

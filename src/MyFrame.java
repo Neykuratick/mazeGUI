@@ -19,6 +19,8 @@ public class MyFrame extends JFrame implements ActionListener {
     JButton saveB;
     JButton generateWorld;
     String room;
+    String config;
+    String configDefault;
     JFrame canvas;
     JTextArea textArea;
     JTextArea keysInput;
@@ -33,13 +35,30 @@ public class MyFrame extends JFrame implements ActionListener {
 
     MyFrame() throws FileNotFoundException {
 
-        room = Methods.scanFile("src/generatedlvl.dat");
+        File f = new File("src/config.ini");
+        if(!f.exists()) {
+            FileHandler.createConfig();
+            config = Methods.scanFile("src/config.ini");
+        }
+
+        if (Methods.scanFile("src/generatedlvl.dat").equals("nul")) {
+            System.out.println("Error");
+            FileHandler.writer();
+            room = Methods.scanFile("src/generatedlvl.dat");
+        } else { room = Methods.scanFile("src/generatedlvl.dat"); }
+
+
+        config = Methods.scanFile("src/config.ini");
 
         System.out.println(room);
 
-        playerY = Methods.findPlayerChar(room, columns, lines, '*')[0];
-        playerX = Methods.findPlayerChar(room, columns, lines, '*')[1];
-        playerChar = Methods.findPlayerChar(room, columns, lines, '*')[2];
+        if (!room.equals("nul")) {
+            playerY = Methods.findPlayerChar(room, columns, lines, '*')[0];
+            playerX = Methods.findPlayerChar(room, columns, lines, '*')[1];
+            playerChar = Methods.findPlayerChar(room, columns, lines, '*')[2];
+        } else {
+            System.out.println("Error");
+        }
 
         System.out.println("PlayerY: " + playerX + " PlayerX: " + playerX);
 
@@ -95,7 +114,7 @@ public class MyFrame extends JFrame implements ActionListener {
         textArea.setFont(new Font("JetBrainsMono", Font.PLAIN, 15));
         textArea.setColumns(columns);
 
-        keysInput = new JTextArea("Keys: \nTreasures: ");
+        keysInput = new JTextArea(config);
         keysInput.setFont(new Font("JetBrainsMono", Font.PLAIN, 15));
         keysInput.setColumns(columns);
 
@@ -114,6 +133,12 @@ public class MyFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == saveB) {
+            config = keysInput.getText();
+            keysInput.setText(config);
+            FileHandler.overrideConfig(config);
+        }
 
         if (e.getSource() == generateWorld) {
             FileHandler.writer();
