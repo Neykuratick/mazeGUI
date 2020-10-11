@@ -17,7 +17,7 @@ public class FileHandler {
 
         try {
             FileWriter myWriter = new FileWriter("src/generatedlvl.dat");
-            String room = Methods.afterProccesing(12, 8, config, configPath);
+            String room = Generate.world(12, 8, config, configPath);
             myWriter.write(room);
             myWriter.close();
         } catch (IOException e) {
@@ -37,7 +37,7 @@ public class FileHandler {
 
         try {
             FileWriter myWriter = new FileWriter("src/config.ini");
-            myWriter.write("Keys = 0\nTreasures = 0\nTraps = 0\nMoves = 100");
+            myWriter.write("Keys = 0\nTreasures = 0\nTraps = 0\nDifficulty = 4\nMoves = 100");
             myWriter.close();
         } catch (IOException e) {
             System.out.println("Shit, everything's wrong");
