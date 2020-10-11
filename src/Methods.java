@@ -12,6 +12,15 @@ public class Methods {
         return array;
     }
 
+    public static int countingElements(int array[], int arraySize) {
+        int count = 0;
+        for (int i = 0; i < arraySize; i++) {
+            count++;
+        }
+
+        return count;
+    }
+
     public static int countStringChars(String string) {
         int count = 0;
 
@@ -127,30 +136,31 @@ public class Methods {
             }
 
             // picking a door
-            int doorPick = 0;
-            while (doorPick == 0) {
-                doorPick = rand.nextInt(levelMetaBoolCount);
+            while (door == 0) {
+                if (i%2 == 0) {
+                    int doorsPick = 0;
+                    doorsPick = rand.nextInt(countingElements(foundDoors, levelMetaBoolCount));
+                    door = foundDoors[doorsPick];
+                } else { break; }
             }
 
-            System.out.println(doorPick);
-
             for (int j=0; j < columns+1; j++) {
+
+                if (j == columns && !lastLine) {
+                    level += "\n";
+                }
 
                 if (j == 0 && !lastLine) {
                     level += "#";
                 }
 
-                else if (j >= freeCellsStart && j < columns && freeCells > 0 && !lastLine || j == doorPick) {
+                else if (j >= freeCellsStart && j < columns && freeCells > 0 && !lastLine || j == door) {
                     level += ".";
                     freeCells -= 1;
                 }
 
                 else if (j == columns-1 && !lastLine) {
                     level += "#";
-                }
-
-                else if (j == columns && !lastLine) {
-                    level += "\n";
                 }
 
                 else if (lastLine && j != 0) {

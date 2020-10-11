@@ -11,6 +11,9 @@ public class Main {
 //            System.out.println(i);
 //        }
 
-        Methods.generaterator(12, 8);
+        for (int i = 0; i < 10; i++) {
+            Methods.generaterator(12, 8);
+            System.out.println("");
+        }
     }
 }
