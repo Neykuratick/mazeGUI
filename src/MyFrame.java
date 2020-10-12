@@ -122,7 +122,7 @@ public class MyFrame extends JFrame implements ActionListener {
         // textAreas
         textArea = new JTextArea(room);
         textArea.setEditable(false);
-        textArea.setFont(new Font("JetBrainsMono", Font.PLAIN, 15));
+        textArea.setFont(new Font("Courier new", Font.PLAIN, 15));
         textArea.setColumns(columns);
 
         keysInput = new JTextArea(config);
