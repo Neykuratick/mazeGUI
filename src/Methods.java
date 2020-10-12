@@ -1,9 +1,5 @@
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Methods {
@@ -16,15 +12,6 @@ public class Methods {
             }
         }
         return array;
-    }
-
-    public static int isThisIntInArray(int[] array, int arraySize, int number) {
-        for (int i = 0; i < arraySize; i++) {
-            if (array[i] == number) {
-                return number;
-            }
-        }
-        return -1;
     }
 
     public static int countingElements(int[] array, int arraySize) {

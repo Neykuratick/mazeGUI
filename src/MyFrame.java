@@ -48,8 +48,8 @@ public class MyFrame extends JFrame implements ActionListener {
         if (Methods.scanFile(levelPath).equals("nul")) {
             System.out.println("Error");
             FileHandler.writer(config, configPath, levelPath);
-            room = Methods.scanFile(levelPath);
-        } else { room = Methods.scanFile(levelPath); }
+        }
+        room = Methods.scanFile(levelPath);
 
 
         config = Methods.scanFile(configPath);
@@ -164,6 +164,8 @@ public class MyFrame extends JFrame implements ActionListener {
                 System.out.println("Not found");
             }
 
+            try {keysAmount = FileHandler.readConfig(configPath, 1);} // reading how many keys there are on the level
+            catch (IOException ioException) {ioException.printStackTrace();}
             playerY = Methods.findSpecificChar(room, columns, lines, '*')[0];
             playerX = Methods.findSpecificChar(room, columns, lines, '*')[1];
             playerChar = Methods.findSpecificChar(room, columns, lines, '*')[2];
@@ -179,6 +181,7 @@ public class MyFrame extends JFrame implements ActionListener {
             textArea.setText(room);
         }
 
+        // if "Up" button is pressed
         if (e.getSource() == upB && playerStats[3] == 0 && playerStats[2] > 0) {
 
             if (playerY > 0) {
@@ -206,6 +209,7 @@ public class MyFrame extends JFrame implements ActionListener {
             textArea.setText(room);
         }
 
+        // if "down" button is pressed
         if (e.getSource() == downB && playerStats[3] == 0 && playerStats[2] > 0) {
 
             if (playerY < lines - 1) {
@@ -235,6 +239,7 @@ public class MyFrame extends JFrame implements ActionListener {
             textArea.setText(room);
         }
 
+        // if "Left" button is pressed
         if (e.getSource() == leftB && playerStats[3] == 0 && playerStats[2] > 0) {
 
             if (playerX > 1) {
@@ -261,6 +266,7 @@ public class MyFrame extends JFrame implements ActionListener {
             textArea.setText(room);
         }
 
+        // if "Right" button is pressed
         if (e.getSource() == rightB && playerStats[3] == 0 && playerStats[2] > 0) {
 
             if (playerX < columns - 1) {
