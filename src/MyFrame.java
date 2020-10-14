@@ -37,7 +37,9 @@ public class MyFrame extends JFrame implements ActionListener {
     public static int[] playerStats = new int[4]; // 0 keys, 1 treasures, 2 moves, 3 won\lose (-1 to 1)
 
 
-    MyFrame() throws IOException {
+    MyFrame() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         File f = new File(configPath);
         if(!f.exists()) {
