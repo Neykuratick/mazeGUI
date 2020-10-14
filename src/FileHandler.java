@@ -9,10 +9,10 @@ public class FileHandler {
         try {
             File myObj = new File(levelPath);
             if (myObj.createNewFile()) {
-                System.out.println("File created");
+               //  System.out.println("File created");
             }
         } catch (IOException e) {
-            System.out.println("Shit, error");
+           // System.out.println("Shit, error");
         }
 
         try {
@@ -21,7 +21,7 @@ public class FileHandler {
             myWriter.write(room);
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("Shit, everything's wrong");
+          //  System.out.println("Shit, everything's wrong");
         }
     }
 
@@ -29,10 +29,10 @@ public class FileHandler {
         try {
             File myObj = new File(configPath);
             if (myObj.createNewFile()) {
-                System.out.println("File created");
+               // System.out.println("File created");
             }
         } catch (IOException e) {
-            System.out.println("Shit, error");
+           // System.out.println("Shit, error");
         }
 
         try {
@@ -40,7 +40,7 @@ public class FileHandler {
             myWriter.write("Keys = 0\nTreasures = 0\nTraps = 0\nDifficulty = 4\nMoves = 30");
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("Shit, everything's wrong");
+            // System.out.println("Shit, everything's wrong");
         }
     }
 
@@ -50,7 +50,7 @@ public class FileHandler {
             myWriter.write(str);
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("Shit, everything's wrong");
+            // System.out.println("Shit, everything's wrong");
         }
     }
 

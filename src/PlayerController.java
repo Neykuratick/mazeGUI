@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Scanner;
@@ -26,15 +27,15 @@ public class PlayerController {
 
         if (charr == 'E' && playerStats[0] == keys) {
             MyFrame.room = "You Won!\n";
-            System.out.println("You won!");
+          //  System.out.println("You won!");
             playerStats[3] = 1;
         } else if (charr == 'E') {
-            System.out.println("Come back to your tasks!");
+            JOptionPane.showMessageDialog(null, "Come back to your tasks!");
         }
 
         if (MyFrame.playerStats[2] == 0) {
             MyFrame.room = "Ran out of moves!\n";
-            System.out.println("Ran out of moves!");
+            // System.out.println("Ran out of moves!");
             playerStats[3] = -1;
         }
 
@@ -44,7 +45,7 @@ public class PlayerController {
             for (int i = 0; i < trapsAmount; i++) {
                 if (MyFrame.playerChar == sc.nextInt()) {
                     MyFrame.room = "JHONNY, IT'S A TRAP!\n";
-                    System.out.println("It'S A TRAP!");
+                    //  System.out.println("It'S A TRAP!");
                     playerStats[3] = -1;
                 }
             }

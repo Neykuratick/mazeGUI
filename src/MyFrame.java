@@ -46,7 +46,7 @@ public class MyFrame extends JFrame implements ActionListener {
         }
 
         if (Methods.scanFile(levelPath).equals("nul")) {
-            System.out.println("Error");
+            // System.out.println("Error");
             FileHandler.writer(config, configPath, levelPath);
         }
         room = Methods.scanFile(levelPath);
@@ -55,7 +55,7 @@ public class MyFrame extends JFrame implements ActionListener {
         config = Methods.scanFile(configPath);
         playerStats[2] = FileHandler.readConfig(configPath, 3);
 
-        System.out.println(room);
+        // System.out.println(room);
 
         if (!room.equals("nul")) {
             playerY = Methods.findSpecificChar(room, columns, lines, '*')[0];
@@ -65,7 +65,7 @@ public class MyFrame extends JFrame implements ActionListener {
             try {playerStats[2] = FileHandler.readConfig(configPath, 5);}
             catch (IOException ioException) {ioException.printStackTrace();}
         } else {
-            System.out.println("Error");
+          //   System.out.println("Error");
         }
 
         // assigning stats
@@ -161,7 +161,7 @@ public class MyFrame extends JFrame implements ActionListener {
             try {
                 room = Methods.scanFile(levelPath);
             } catch (FileNotFoundException fileNotFoundException) {
-                System.out.println("Not found");
+              //   System.out.println("Not found");
             }
 
             try {keysAmount = FileHandler.readConfig(configPath, 1);} // reading how many keys there are on the level
@@ -175,7 +175,7 @@ public class MyFrame extends JFrame implements ActionListener {
             try {playerStats[2] = FileHandler.readConfig(configPath, 5);}
             catch (IOException ioException) {ioException.printStackTrace();}
 
-            System.out.println(room);
+          //   System.out.println(room);
             stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
             textStats.setText(stats);
             textArea.setText(room);
@@ -198,10 +198,10 @@ public class MyFrame extends JFrame implements ActionListener {
 
                     if (playerStats[3] == 0 && Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
-                        System.out.println(room);
+                        //System.out.println(room);
                     }
 
-                }  else { System.out.println("You can't"); }
+                }  else { /* System.out.println("You can't"); */ }
             }
 
             stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
@@ -228,10 +228,10 @@ public class MyFrame extends JFrame implements ActionListener {
 
                     if (playerStats[3] == 0 && Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
-                        System.out.println(room);
+                       //  System.out.println(room);
                     }
 
-                } else { System.out.println("You can't"); }
+                } else { /* System.out.println("You can't"); */ }
             }
 
             stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
@@ -256,9 +256,9 @@ public class MyFrame extends JFrame implements ActionListener {
 
                     if (playerStats[3] == 0 && Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
-                        System.out.println(room);
+                       // System.out.println(room);
                     }
-                } else { System.out.println("You can't"); }
+                } else { /* System.out.println("You can't"); */ }
             }
 
             stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
@@ -283,13 +283,13 @@ public class MyFrame extends JFrame implements ActionListener {
 
                     if (playerStats[3] == 0 && Methods.canPlaceAsterics(room.charAt(newPlayerChar))) {
                         room = Methods.replaceChar(room, '*', playerChar);
-                        System.out.println(room);
+                       // System.out.println(room);
                     }
-                } else { System.out.println("You can't"); }
+                } else { /* System.out.println("You can't"); */ }
             }
 
             if (playerStats[3] != -1 && room.charAt(playerChar) == 'K') {
-                System.out.println("You found a key!");
+               //  System.out.println("You found a key!");
             }
 
             stats = PlayerController.getStatistics(playerStats[2], keysAmount, playerStats[0], playerStats[1]);
